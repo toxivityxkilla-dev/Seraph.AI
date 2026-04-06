@@ -3,6 +3,7 @@ name: Build SeraphimAI
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,14 +13,28 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Build Geode Mod
-        uses: geode-sdk/build-geode-mod@main
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
         with:
-          target: android64
-          combine: true
+          ndk-version: r26b
 
-      - name: Upload Artifact
+      - name: Install Geode CLI
+        run: |
+          wget https://github.com/geode-sdk/cli/releases/latest/download/geode-cli-linux.zip
+          unzip geode-cli-linux.zip
+          sudo mv geode /usr/local/bin/
+
+      - name: Build
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
+            -DANDROID_ABI=arm64-v8a \
+            -DANDROID_PLATFORM=android-23
+          cmake --build build --config Release
+
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: SeraphimAI
-          path: ${{ github.workspace }}/build/*.geode
+          path: build/*.geode
