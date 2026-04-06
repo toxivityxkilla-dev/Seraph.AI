@@ -8,9 +8,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Build Geode Mod
         uses: geode-sdk/build-geode-mod@main
         with:
           target: android64
+          combine: true
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SeraphimAI
+          path: ${{ github.workspace }}/build/*.geode
