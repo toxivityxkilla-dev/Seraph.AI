@@ -1,0 +1,13 @@
+{
+    "geode": "4.4.0",
+    "gd": {
+        "android": "2.2081"
+    },
+    "id": "toxivityxkilla.seraphimai",
+    "name": "SeraphimAI",
+    "version": "v1.0.0",
+    "developer": "toxivityxkilla",
+    "description": "A legitimate AI player that uses real-time obstacle detection to navigate Geometry Dash levels.",
+    "tags": ["gameplay", "ai", "automation"],
+    "links": {}
+}
